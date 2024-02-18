@@ -106,9 +106,7 @@ def test_coin_toss():
 # ---------- PART 4: Getting 4 of a kind from a deck of cards ----------
 def test_4_kind():  
     deck = Deck()
-    for x in Deck.get():
-        print(f"{x.suit}, {x.rank}")
-        input()
+
 
 # Main function is used for desired test cases
 def main():

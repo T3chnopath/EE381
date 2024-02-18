@@ -1,14 +1,19 @@
 import random as rand
 import numpy as np
 
-SUIT = ["♣", "♦", "♥", "♠"]
+SUITS = ["♣", "♦", "♥", "♠"]
 NUM_SUIT = 4
 NUM_RANK = 13
 
 class Card:
+    # Construct by suit and rank
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
+
+    # Printing for debug
+    def __repr__(self):
+        return f"{self.suit}, {self.rank}"
 
     def getSuit(self):
         return self.suit
@@ -18,18 +23,27 @@ class Card:
 
 class Deck:
     def __init__(self):
-        self.deck = np.empty([NUM_SUIT, NUM_RANK], dtype=Card)
+        # Create empty deck
+        self.deck = [[] for _ in range(NUM_SUIT)]
 
-        # Iterate suits
-        for index, suit in enumerate(SUIT):
-            # Iterate ranks
-            for rank in np.arange(1, NUM_RANK, 1):
-                self.deck[index] = Card(suit, rank)
+        # Populate deck
+        for suitIndex, suit in enumerate(SUITS):
+            for rank in range(NUM_RANK):
+                self.deck[suitIndex].append(Card(suit, rank + 1))
 
     def get(self):
         return self.deck
 
-    def getCard(self):
-        return np.random.choice(self.deck)       
+    def drawCard(self):
+        # Get suits that aren't empty
+        nonEmptySuits = [suit for suit in self.deck if suit]
 
-        
+        if nonEmptySuits:
+            # Randomly select suit
+            randSuit = rand.choice(nonEmptySuits)
+
+            # Randomly pop card
+            return randSuit.pop(rand.randint(0, len(randSuit) - 1))
+
+        else:
+            return None
