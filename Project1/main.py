@@ -105,7 +105,28 @@ def test_coin_toss():
 
 # ---------- PART 4: Getting 4 of a kind from a deck of cards ----------
 def test_4_kind():  
-    deck = Deck()
+    NUM_CARD = 5
+    NUM_KIND = 4
+    N = 1_000_000
+    successes = 0
+
+    for x in range(N):
+        # Empty deck 
+        deck = Deck()
+
+        # Create a hand of 5 cards
+        hand = [deck.drawCard() for card in range(NUM_CARD)]
+
+        # Get the ranks in the hand
+        ranks = [card.getRank() for card in hand]
+
+        # See if there are 4 identical cards
+        for rank in ranks:
+            if ranks.count(rank) >= 4:
+                successes += 1
+                break
+
+    print(f"Probability of 4 of a kind: {successes / N}")
 
 
 # Main function is used for desired test cases
