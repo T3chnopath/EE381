@@ -85,20 +85,29 @@ def test_sum_6_or_9():
 
 # ---------- PART 3: Getting 500 heads when tossing 1000 coins  ----------
 def test_coin_toss():
-    # [Head, Tail] = [True, False]
-    HEAD = True
-    TAIL = False
-    N = 1000
+    HEAD, TAIL   = True, False 
+    HEAD_SUCCESS = 500
+    NUM_COINS    = 1000
+    N            = 100_000
+    success      = 0 
 
-    # Pre
+    # Toss 1000 fair coins, 100,000 times
+    coin_flips = np.random.choice([HEAD, TAIL], size = [N, NUM_COINS])
+        
+    # Success if EXACTLY 500 heads
+    headCounts = np.sum(coin_flips == HEAD, axis = 1)
+    success = np.sum(headCounts == HEAD_SUCCESS)
 
-    coinFace = rand.choice(True, False)
+    print(f"Probability of 500 heads in 1000 tosses: {success / N}")
 
-
+    
+            
+  
 # Main function is used for desired test cases
 def main():
-    test_nsided_die()
-    test_sum_6_or_9()
+    # test_nsided_die()
+    # test_sum_6_or_9()
+    test_coin_toss()
 
 
 # Call main if run from the command line
