@@ -4,15 +4,9 @@ from typing import List
 PASSCODE_LEN = 4
 def getPasscode():
     passcode = ""
-    
-    for x in range(PASSCODE_LEN):
-        passcode += str(rand.randint(0, 9))
-
+    passcode_digits = rand.choices('0123456789', k=PASSCODE_LEN)
+    passcode = ''.join(passcode_digits)
     return passcode
 
 def getPasscodeList(size: int):
-    passcodes = []
-    for x in range(size):
-        passcodes.append(getPasscode())
-    
-    return sorted(passcodes)
+    return [getPasscode() for _ in range(size)]

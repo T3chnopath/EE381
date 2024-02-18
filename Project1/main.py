@@ -134,21 +134,26 @@ def test_hack_passcode():
     #     successes = multiprocess(NUM_CORES, N, taskCheckPasscode, [M])
     #     print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
 
+    # Have M close to theoretical, maximize accuracy with higher N
+    M = 6770
+    N = 100_002
+
+    # Used for scaling M and terminating loop 
+    K_p = 3000  
+    epsilon = 1e-3
+   
     # Repeat experiment until probability is 0.5
-    K_p = 5000  
-    epsilon = 1e-3 
-    M = 1000
-    N = 5000
     probability = 0
     while not isclose(probability, 0.5, abs_tol=epsilon):
-        successes = multiprocess(NUM_CORES, N, taskCheckPasscode, [int(M)])
+        # Spin up task on mulitple cores
+        successes = multiprocess(NUM_CORES + 1, N, taskCheckPasscode, [int(M)])
         probability = successes / N
 
-        adjustment = (0.5 - probability) * K_p
-        M += adjustment
+        # Adjust M based on overshoot or undershoot
+        M += (0.5 - probability) * K_p
         print(M, probability)
 
-    print(f"M for 0.5 probability: {M}")
+    print(f"M for 0.5 probability: {int(M)}")
 
     
 # Main function is used for desired test cases
