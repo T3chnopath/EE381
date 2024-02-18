@@ -2,10 +2,21 @@
 import random as rand
 import matplotlib.pyplot as plot
 import numpy as np
+import time
+
+from math import log10
 
 # Import user modules
 from nsided_die import nsided_die
 from cards import Card, Deck
+from passcode import getPasscode, getPasscodeList
+
+# Import test modules
+from test_helpers import multiprocess
+from test_helpers import taskCheckCards
+from test_helpers import taskCheckPasscode
+
+NUM_CORES = 5
 
 # ---------- PART 1: Function for a n-sided die ----------
 def test_nsided_die():
@@ -108,26 +119,23 @@ def test_4_kind():
     NUM_CARD = 5
     NUM_KIND = 4
     N = 1_000_000
-    successes = 0
-
-    for x in range(N):
-        # Empty deck 
-        deck = Deck()
-
-        # Create a hand of 5 cards
-        hand = [deck.drawCard() for card in range(NUM_CARD)]
-
-        # Get the ranks in the hand
-        ranks = [card.getRank() for card in hand]
-
-        # See if there are 4 identical cards
-        for rank in ranks:
-            if ranks.count(rank) >= 4:
-                successes += 1
-                break
-
+    
+    successes = multiprocess(NUM_CORES, N, taskCheckCards, (NUM_CARD, NUM_KIND))
     print(f"Probability of 4 of a kind: {successes / N}")
 
+
+# ---------- PART 5: The Password Hacking Problem ----------
+def test_hack_passcode():
+    M_HACKER_LIST = [10 ** 4, 10 ** 5]
+    N = 1000
+
+    # Repeat experiment N times for M sizes in hacker list,
+    start = time.time()
+    for M in M_HACKER_LIST:
+        successes = multiprocess(NUM_CORES, N, taskCheckPasscode, (M))
+
+        print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
+        print(time.time() - start)
 
 # Main function is used for desired test cases
 def main():
@@ -135,6 +143,7 @@ def main():
     # test_sum_6_or_9()
     # test_coin_toss()
     test_4_kind()
+    # test_hack_passcode()
 
 
 # Call main if run from the command line
