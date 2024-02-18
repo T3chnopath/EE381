@@ -5,6 +5,7 @@ import numpy as np
 
 # Import user modules
 from nsided_die import nsided_die
+from cards import Card, Deck
 
 # ---------- PART 1: Function for a n-sided die ----------
 def test_nsided_die():
@@ -83,6 +84,7 @@ def test_sum_6_or_9():
     plot.stem(rollArray, sumProbArr)
     plot.show()    
 
+
 # ---------- PART 3: Getting 500 heads when tossing 1000 coins  ----------
 def test_coin_toss():
     HEAD, TAIL   = True, False 
@@ -100,14 +102,20 @@ def test_coin_toss():
 
     print(f"Probability of 500 heads in 1000 tosses: {success / N}")
 
-    
-            
-  
+
+# ---------- PART 4: Getting 4 of a kind from a deck of cards ----------
+def test_4_kind():  
+    deck = Deck()
+    for x in Deck.get():
+        print(f"{x.suit}, {x.rank}")
+        input()
+
 # Main function is used for desired test cases
 def main():
     # test_nsided_die()
     # test_sum_6_or_9()
-    test_coin_toss()
+    # test_coin_toss()
+    test_4_kind()
 
 
 # Call main if run from the command line
