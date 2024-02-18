@@ -2,9 +2,8 @@
 import random as rand
 import matplotlib.pyplot as plot
 import numpy as np
-import time
 
-from math import log10
+from math import log10, isclose
 
 # Import user modules
 from nsided_die import nsided_die
@@ -17,6 +16,7 @@ from test_helpers import taskCheckCards
 from test_helpers import taskCheckPasscode
 
 NUM_CORES = 5
+
 
 # ---------- PART 1: Function for a n-sided die ----------
 def test_nsided_die():
@@ -120,7 +120,7 @@ def test_4_kind():
     NUM_KIND = 4
     N = 1_000_000
     
-    successes = multiprocess(NUM_CORES, N, taskCheckCards, (NUM_CARD, NUM_KIND))
+    successes = multiprocess(NUM_CORES, N, taskCheckCards, [NUM_CARD, NUM_KIND])
     print(f"Probability of 4 of a kind: {successes / N}")
 
 
@@ -130,20 +130,34 @@ def test_hack_passcode():
     N = 1000
 
     # Repeat experiment N times for M sizes in hacker list,
-    start = time.time()
-    for M in M_HACKER_LIST:
-        successes = multiprocess(NUM_CORES, N, taskCheckPasscode, (M))
+    # for M in M_HACKER_LIST:
+    #     successes = multiprocess(NUM_CORES, N, taskCheckPasscode, [M])
+    #     print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
 
-        print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
-        print(time.time() - start)
+    # Repeat experiment until probability is 0.5
+    K_p = 5000  
+    epsilon = 1e-3 
+    M = 1000
+    N = 5000
+    probability = 0
+    while not isclose(probability, 0.5, abs_tol=epsilon):
+        successes = multiprocess(NUM_CORES, N, taskCheckPasscode, [int(M)])
+        probability = successes / N
 
+        adjustment = (0.5 - probability) * K_p
+        M += adjustment
+        print(M, probability)
+
+    print(f"M for 0.5 probability: {M}")
+
+    
 # Main function is used for desired test cases
 def main():
     # test_nsided_die()
     # test_sum_6_or_9()
     # test_coin_toss()
-    test_4_kind()
-    # test_hack_passcode()
+    # test_4_kind()
+    test_hack_passcode()
 
 
 # Call main if run from the command line
