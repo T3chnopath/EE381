@@ -2,24 +2,40 @@
 from multiprocessing import Pool
 
 # Import user modules
-from nsided_die import nsided_die
-from cards import Card, Deck
+from cards import Deck
 from passcode import getPasscode, getPasscodeList
 
 # Multiprocess helper
-def multiprocess(numCores, totalRuns, task, taskArgs=None):
+def multiprocess(numProc, totalRuns, task, taskArgs=None):
     # Create tuple of arguments for star map
-    args = [(totalRuns // numCores)]
+    args = [(totalRuns // numProc)]
 
     # Append arguments 
     for arg in taskArgs:
         args.append(arg)
 
     # Spin up task on the specified cores
-    with Pool(numCores) as pool:
-        results = pool.starmap(task, (tuple(args) for i in range(numCores)))
+    with Pool(numProc) as pool:
+        results = pool.starmap(task, (tuple(args) for i in range(numProc)))
 
-    return sum(results)
+    # Return list for external filtering
+    return results
+
+# Helper to find median of an array
+def median(array):
+    # First, sort the array
+    sorted_array = sorted(array)
+    
+    # Find the number of elements in the array
+    n = len(sorted_array)
+    
+    # Check if the number of elements is odd
+    if n % 2 == 1:
+        # If odd, return the middle element
+        return sorted_array[n // 2]
+    else:
+        # If even, return the average of the two middle elements
+        return (sorted_array[n // 2 - 1] + sorted_array[n // 2]) / 2
 
 # Card helpers
 def taskCheckCards(N, numCards, numKind):

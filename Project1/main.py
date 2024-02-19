@@ -2,7 +2,7 @@
 import random as rand
 import matplotlib.pyplot as plot
 import numpy as np
-
+import time
 from math import log10, isclose
 
 # Import user modules
@@ -11,12 +11,10 @@ from cards import Card, Deck
 from passcode import getPasscode, getPasscodeList
 
 # Import test modules
-from test_helpers import multiprocess
-from test_helpers import taskCheckCards
-from test_helpers import taskCheckPasscode
-
-NUM_CORES = 5
-
+from helpers import multiprocess
+from helpers import median
+from helpers import taskCheckCards
+from helpers import taskCheckPasscode
 
 # ---------- PART 1: Function for a n-sided die ----------
 def test_nsided_die():
@@ -116,45 +114,54 @@ def test_coin_toss():
 
 # ---------- PART 4: Getting 4 of a kind from a deck of cards ----------
 def test_4_kind():  
-    NUM_CARD = 5
-    NUM_KIND = 4
+    NUM_CARD  = 5
+    NUM_KIND  = 4
+    NUM_PROC = 5
     N = 1_000_000
     
-    successes = multiprocess(NUM_CORES, N, taskCheckCards, [NUM_CARD, NUM_KIND])
+    successes = multiprocess(NUM_PROC, N, taskCheckCards, [NUM_CARD, NUM_KIND])
     print(f"Probability of 4 of a kind: {successes / N}")
 
 
 # ---------- PART 5: The Password Hacking Problem ----------
 def test_hack_passcode():
     M_HACKER_LIST = [10 ** 4, 10 ** 5]
+    NUM_PROC = 6
     N = 1000
 
     # Repeat experiment N times for M sizes in hacker list,
     # for M in M_HACKER_LIST:
-    #     successes = multiprocess(NUM_CORES, N, taskCheckPasscode, [M])
+    #     successes = multiprocess(NUM_PROC, N, taskCheckPasscode, [M])
     #     print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
 
     # Have M close to theoretical, maximize accuracy with higher N
-    M = 6770
-    N = 100_002
+    M = 6900
+    N = 393_536 # evenly divisble by 6 cores
+    
+    # Used for scaling M and terminating loop at 0.5
+    K_p = 2000  
+    epsilon = 1e-4
+    target = 0.5
 
-    # Used for scaling M and terminating loop 
-    K_p = 3000  
-    epsilon = 1e-3
-   
     # Repeat experiment until probability is 0.5
     probability = 0
-    while not isclose(probability, 0.5, abs_tol=epsilon):
+    start = time.time()
+    while not isclose(probability, target, abs_tol=epsilon):
         # Spin up task on mulitple cores
-        successes = multiprocess(NUM_CORES + 1, N, taskCheckPasscode, [int(M)])
-        probability = successes / N
+        probBuf = []
+        successes = multiprocess(NUM_PROC, N, taskCheckPasscode, [M])
+        probBuf.extend(x / ( N // NUM_PROC) for x in successes)
 
-        # Adjust M based on overshoot or undershoot
-        M += (0.5 - probability) * K_p
+        """
+        Adjust M based on overshoot or undershoot of probability.
+        Use median to filter out outiiers and get result.
+        """
+        probability = median(probBuf)
+        M += int((target - probability) * K_p)
         print(M, probability)
 
-    print(f"M for 0.5 probability: {int(M)}")
-
+    print(f"M for 0.5 probability: {M}")
+    print(f"Time Elapsed: {time.time() - start}")
     
 # Main function is used for desired test cases
 def main():
