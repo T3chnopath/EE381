@@ -1,12 +1,25 @@
 # Python STD Library Helpers
 from multiprocessing import Pool
+from typing import Callable, List, Any
 
 # Import user modules
 from cards import Deck
 from passcode import getPasscode, getPasscodeList
 
-# Multiprocess helper
-def multiprocess(numProc, totalRuns, task, taskArgs=None):
+def multiprocess(numProc: int, totalRuns: int , task: Callable, taskArgs: List[Any]=None):
+    """
+    Helper function that multiprocesses tasks.
+
+    Parameters:
+    - numProc   (int): Number of processes to spin up
+    - totalRuns (int): Number of runs of each task, to be split among processes
+    - task (Callable): The function to be executed {totalRuns} times in parallel
+    - taskArgs (List)[OPTIONAL]: The parameters of the function
+
+    Returns:
+        Any: Result of the task
+    """
+
     # Create tuple of arguments for star map
     args = [(totalRuns // numProc)]
 
@@ -21,9 +34,19 @@ def multiprocess(numProc, totalRuns, task, taskArgs=None):
     # Return list for external filtering
     return results
 
-# Helper to find median of an array
-def median(array):
-    # First, sort the array
+
+def median(array: List[Any]) -> Any:
+    """
+    Helper function that returns median of an array. Array is assumed to be unsorted.
+
+    Parameters:
+        array (List[Any]): Array to find median of
+
+    Returns:
+        Any: Median of the input array
+    """
+
+    # Sort the array
     sorted_array = sorted(array)
     
     # Find the number of elements in the array
@@ -37,20 +60,32 @@ def median(array):
         # If even, return the average of the two middle elements
         return (sorted_array[n // 2 - 1] + sorted_array[n // 2]) / 2
 
-# Card helpers
-def taskCheckCards(N, numCards, numKind):
+
+def taskCheckCards(N: int, numCards: int, numKind: int) -> int:
+    """
+    Task helper function for testing the cards module. Randomly draws cards and sees if there are identical kinds.
+
+    Parameters:
+        N        (int): Number of times to repeat experiment
+        numCards (int): How many cards to draw
+        numKind  (int): How many identical kinds
+
+    Returns:
+        int: Number of times {numKind} kinds are found successfuly in N experiments
+    """
+
     successes = 0
     for x in range(N):
         # Empty deck 
         deck = Deck()
 
-        # Create a hand of 5 cards
+        # Create a hand of num cards
         hand = [deck.drawCard() for card in range(numCards)]
 
         # Get the ranks in the hand
         ranks = [card.getRank() for card in hand]
 
-        # See if there are 4 identical cards
+        # See if there are identical cards of specified kind
         for rank in ranks:
             if ranks.count(rank) >= numKind:
                 successes += 1
@@ -58,11 +93,23 @@ def taskCheckCards(N, numCards, numKind):
 
     return successes
 
-# Passcode helpers
-def taskCheckPasscode(N, hackerListSize):
+
+def taskCheckPasscode(N: int, hackerListSize: int) -> int:
+    """
+    Task helper function for testing the passocde module. 
+
+    Parameters:
+        N              (int): Number of times to repeat the experiment
+        hackerListSize (int): Size of the hacker list under test
+
+    Returns:
+        int: Number of times the passcode is found in the hacker list
+    """
+
+    # Check if passcode is in the randomized hacker list
     success = 0 
     for x in range(N):
         if getPasscode() in getPasscodeList(hackerListSize):
-            success += 1
+            success += 2
     
     return success

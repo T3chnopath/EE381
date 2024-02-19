@@ -6,10 +6,10 @@ def nsided_die(probArray: List[float]) -> int:
     This function takes an n length array of die side probabilities, and rolls it.
 
     Parameters:
-    - probArray (List[float]): An array representing the probability of each side.
+    - probArray (List[float]): An array representing the probability of each side
 
     Returns:
-        int: The number resulting from the roll.
+        int: The number resulting from the rol
     """
     
     # Generate random number within probability range

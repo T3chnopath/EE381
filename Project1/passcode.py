@@ -25,7 +25,7 @@ def getPasscodeList(size: int) -> List[str]:
     Generates a randomized hacker passcode list.
 
     Parameters:
-    - size (int): The size of the randomized passcode list.
+    - size (int): The size of the randomized passcode list
 
     Returns:
         List[str]: The list of passcodes of specified size
