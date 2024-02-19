@@ -16,6 +16,7 @@ from helpers import median
 from helpers import taskCheckCards
 from helpers import taskCheckPasscode
 
+
 # ---------- PART 1: Function for a n-sided die ----------
 def test_nsided_die():
     N = 1000
@@ -129,10 +130,10 @@ def test_hack_passcode():
     NUM_PROC = 6
     N = 1000
 
-    # Repeat experiment N times for M sizes in hacker list,
-    # for M in M_HACKER_LIST:
-    #     successes = multiprocess(NUM_PROC, N, taskCheckPasscode, [M])
-    #     print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
+    # Repeat experiment N times for M sizes in hacker list
+    for M in M_HACKER_LIST:
+        successes = multiprocess(NUM_PROC, N, taskCheckPasscode, [M])
+        print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
 
     # Have M close to theoretical, maximize accuracy with higher N
     M = 6900
@@ -163,12 +164,13 @@ def test_hack_passcode():
     print(f"M for 0.5 probability: {M}")
     print(f"Time Elapsed: {time.time() - start}")
     
+
 # Main function is used for desired test cases
 def main():
-    # test_nsided_die()
-    # test_sum_6_or_9()
-    # test_coin_toss()
-    # test_4_kind()
+    test_nsided_die()
+    test_sum_6_or_9()
+    test_coin_toss()
+    test_4_kind()
     test_hack_passcode()
 
 

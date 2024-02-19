@@ -12,7 +12,7 @@ def nsided_die(probArray: List[float]) -> int:
         int: The number resulting from the roll.
     """
     
-    # Generate random number within probabilit range
+    # Generate random number within probability range
     randomNumber = rand.random()
     
     # Calculate cumulative sum for a distribution of the die probabilities
