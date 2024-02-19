@@ -1,7 +1,10 @@
+# Import Python STD library Modules
 import random as rand
 from typing import List
 
+# Constants
 PASSCODE_LEN = 4
+
 def getPasscode() -> str:
     """
     This function takes an n length array of die side probabilities, and rolls it.

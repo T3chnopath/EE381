@@ -1,10 +1,11 @@
-# Python STD Library Helpers
+# Import Python STD Library Helpers
 from multiprocessing import Pool
 from typing import Callable, List, Any
 
 # Import user modules
 from cards import Deck
 from passcode import getPasscode, getPasscodeList
+
 
 def multiprocess(numProc: int, totalRuns: int , task: Callable, taskArgs: List[Any]=None):
     """
@@ -71,7 +72,7 @@ def taskCheckCards(N: int, numCards: int, numKind: int) -> int:
         numKind  (int): How many identical kinds
 
     Returns:
-        int: Number of times {numKind} kinds are found successfuly in N experiments
+        int: Number of times {numKind} kinds are found successfully in N experiments
     """
 
     successes = 0
