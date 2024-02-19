@@ -24,7 +24,7 @@ class Card:
     # Construct by suit and rank
     def __init__(self, suit: str, rank: int):
         """
-        Default constructor. Returns False if suit and rank are not valid.
+        Default constructor.
 
         Parameters:
             suit (str): Suit of card

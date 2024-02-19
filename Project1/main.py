@@ -32,19 +32,20 @@ def test_nsided_die():
 
     # Create frequency map, start counting from 1, as dice starts from 1
     frequencies = np.bincount(dieOutputArr, minlength=6)[1:]
+    x_labels = np.arange(1, len(frequencies) + 1)
 
     # Plot frequency of the output array
     plot.title("Frequency of Skewed Die")
     plot.xlabel("Dice Number")
     plot.ylabel("Frequency")
-    plot.stem(frequencies)
+    plot.stem(x_labels, frequencies)
     plot.show()    
 
     # Plot the PMF of the output array
     plot.title("PMF of Skewed Die")
     plot.xlabel("Dice Number")
     plot.ylabel("Probability")
-    plot.stem(dieProbArr)
+    plot.stem(x_labels, dieProbArr)
     plot.show()    
 
 
