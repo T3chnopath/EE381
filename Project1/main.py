@@ -121,19 +121,20 @@ def test_4_kind():
     N = 1_000_000
     
     successes = multiprocess(NUM_PROC, N, taskCheckCards, [NUM_CARD, NUM_KIND])
-    print(f"Probability of 4 of a kind: {successes / N}")
+    print(f"Probability of 4 of a kind: {sum(successes) / N}")
 
 
 # ---------- PART 5: The Password Hacking Problem ----------
 def test_hack_passcode():
     M_HACKER_LIST = [10 ** 4, 10 ** 5]
-    NUM_PROC = 6
+    NUM_PROC_A = 5
+    NUM_PROC_B = 6
     N = 1000
 
     # Repeat experiment N times for M sizes in hacker list
     for M in M_HACKER_LIST:
-        successes = multiprocess(NUM_PROC, N, taskCheckPasscode, [M])
-        print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {successes / N}")
+        successes = multiprocess(NUM_PROC_A, N, taskCheckPasscode, [M])
+        print(f"Probability of passcode in 10^{int(log10(M))} hacker list: {sum(successes) / N }")
 
     # Have M close to theoretical, maximize accuracy with higher N
     M = 6900
@@ -150,8 +151,8 @@ def test_hack_passcode():
     while not isclose(probability, target, abs_tol=epsilon):
         # Spin up task on mulitple cores
         probBuf = []
-        successes = multiprocess(NUM_PROC, N, taskCheckPasscode, [M])
-        probBuf.extend(x / ( N // NUM_PROC) for x in successes)
+        successes = multiprocess(NUM_PROC_B, N, taskCheckPasscode, [M])
+        probBuf.extend(x / ( N // NUM_PROC_B) for x in successes)
 
         """
         Adjust M based on overshoot or undershoot of probability.

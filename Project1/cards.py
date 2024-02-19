@@ -22,7 +22,7 @@ class Card:
     """
 
     # Construct by suit and rank
-    def __init__(self, suit: str, rank: int) -> bool:
+    def __init__(self, suit: str, rank: int):
         """
         Default constructor. Returns False if suit and rank are not valid.
 
@@ -31,17 +31,14 @@ class Card:
             rank (int): Rank of card
 
         Returns:
-            bool: True if card construction was successful
+            Card: Returns instance of self if initialized 
         """
 
-        # If suit and rank valid, initialize and return true
+        # If suit and rank valid, initialize
         if (suit in SUITS) and (rank in range(1, NUM_RANK + 1)):
             self.suit = suit
             self.rank = rank
-            return True
 
-        # Return False if suit and rank check fail 
-        return False
 
     def __repr__(self) -> str:
         """

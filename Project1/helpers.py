@@ -111,6 +111,6 @@ def taskCheckPasscode(N: int, hackerListSize: int) -> int:
     success = 0 
     for x in range(N):
         if getPasscode() in getPasscodeList(hackerListSize):
-            success += 2
+            success += 1
     
     return success
