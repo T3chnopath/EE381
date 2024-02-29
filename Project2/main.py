@@ -6,7 +6,7 @@ E1 = 0.02 # Probability of 1 misread
 
 
 def testErrTransmit():
-    N = 10_000
+    N = 10_000_000
     failure = 0 # Number of times S != R
     
     for i in range(N):
@@ -19,42 +19,42 @@ def testErrTransmit():
 
 
 def testR1GivenS1():
-    N = 1_000_000
-    total = 0 
-    success = 0 # Number of times S != R
+    N = 10_000_000
+    totalS = 0 
+    success = 0 # Number of times S == R
 
     for i in range(N):
         S, R = tx_rx_bit(P0, E0, E1)
        
         # Detect if R = 1 | S = 1
         if S:
-            total += 1
+            totalS += 1
 
             if R:
                 success += 1
 
-    print(f"Probability of R = 1 | S = 1: {(success / total):.5f}")
+    print(f"Probability of R = 1 | S = 1: {(success / totalS):.5f}")
 
 
 def testS1GivenR1():
-    N = 1_000_000
-    total = 0 
-    success = 0 # Number of times S != R
+    N = 10_000_000
+    totalR = 0
+    success = 0 # Number of times S == R
 
     for i in range(N):
         S, R = tx_rx_bit(P0, E0, E1)
        
         # Detect if S = 1 | R = 1
         if R:
-            total += 1
-
+            totalR += 1
+           
             if S:
                 success += 1
 
-    print(f"Probability of S = 1 | R = 1: {(success / total):.5f}")
+    print(f"Probability of S = 1 | R = 1: {(success / totalR):.5f}")
 
 def testEnhanceTransmit():
-    N = 1_000_000
+    N = 10_000_000
     failure = 0 # Number of times S != R
 
     for i in range(N):
