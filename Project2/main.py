@@ -1,10 +1,12 @@
+# Imporrt user libraries
 from tx_rx_bit import tx_rx_bit
 
+# Constants
 P0 = 0.35 # Probability of 0
 E0 = 0.01 # Probability of 0 misread
 E1 = 0.02 # Probability of 1 misread
 
-
+# ---------- PART 1: Probability of Erroneous Transmission ----------
 def testErrTransmit():
     N = 10_000_000
     failure = 0 # Number of times S != R
@@ -17,7 +19,7 @@ def testErrTransmit():
     
     print(f"Probability of tx / rx failure: {failure / N:.5f}")
 
-
+# ---------- PART 2: Conditional Probability - P(R=1 | S=1) ----------
 def testR1GivenS1():
     N = 10_000_000
     totalS = 0 
@@ -35,7 +37,7 @@ def testR1GivenS1():
 
     print(f"Probability of R = 1 | S = 1: {(success / totalS):.5f}")
 
-
+# ---------- PART 3: Conditional Probability - P(S=1 | R=1) ----------
 def testS1GivenR1():
     N = 10_000_000
     totalR = 0
@@ -53,6 +55,7 @@ def testS1GivenR1():
 
     print(f"Probability of S = 1 | R = 1: {(success / totalR):.5f}")
 
+# ---------- PART 4: Enhanced Transmission Method (TMR) ----------
 def testEnhanceTransmit():
     N = 10_000_000
     failure = 0 # Number of times S != R

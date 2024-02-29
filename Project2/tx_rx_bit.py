@@ -14,20 +14,22 @@ def tx_rx_bit(p0: float, e0: float, e1: float, enhanced:bool = False) -> List:
     """
 
     R_buff = [] 
-    M = rand.random() # Used for message chance 
+    M = rand.random() # Generate M for TX bit once
     
     # Set S
     S = True if M <= p0 else False;
 
-    # If enhanced transmission, repeat send    
+    # If enhanced transmission, repeat send {txCount}  times
     if enhanced:
         txCount = 3
     else:
         txCount = 1
 
+    # Iterate over specified txCount size
     for i in range(txCount):
-        T = rand.random() # Used for receive chance
-
+        # Generate T for RX bit every loop
+        T = rand.random() 
+        
         # Set R array
         if   S == False and T <= e0:
             R_buff.append(True)
