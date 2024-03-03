@@ -82,10 +82,10 @@ def testEnhanceTransmit():
 
 # Main function is used for desired test cases
 def main():
-    testErrTransmit()
-    testR1GivenS1()
-    testS1GivenR1()
-    testEnhanceTransmit()
+    testErrTransmit()       # Problem 1
+    testR1GivenS1()         # Problem 2
+    testS1GivenR1()         # Problem 3
+    testEnhanceTransmit()   # Problem 4
 
 # Call main if run from the command line
 if __name__ == "__main__":
