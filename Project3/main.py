@@ -12,7 +12,7 @@ N_EXPERIMENTS = 10_000
 
 
 # ---------- PART 1: Experimental Bernoulli Trials ----------
-def testBernoilli() -> int:
+def testBernoulli() -> int:
     successes = 0
     p = [0.30, 0.10, 0.20, 0.25, 0.15]
     successArr = np.empty(N_EXPERIMENTS, dtype=int)
@@ -123,7 +123,7 @@ def testPoisson():
 
 
 def main():
-    testBernoilli()
+    testBernoulli()
     testBinomial()
     testPoisson()
 
