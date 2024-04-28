@@ -1,4 +1,4 @@
-# Imporrt user libraries
+# Import user libraries
 from tx_rx_bit import tx_rx_bit
 
 # Constants
